@@ -45,3 +45,24 @@ Explicacao:
     Lembrando que para subir as duas partes, você precisará de terminais e portas diferentes.
 
 ATENÇÃO: nas coleções de validação da aplicação via Postman, lembre-se de verificar (ou criar) o arquivo de ambiente (environment) e verificar a porta que sua aplicação está sendo disponibilizada. Implemente as requisições extras que você precisar.
+
+"📷 Capturas de Tela do Projeto"
+Tela de Loguin
+![Screenshot-1](https://github.com/user-attachments/assets/b9c4cc61-b92f-409f-b1f7-b1d29bc60e28)
+
+Home
+![Screenshot-3](https://github.com/user-attachments/assets/96b9e91d-55da-4dfc-a8e0-b155cb585aaa)
+
+Medico (Registrar e listar)
+
+![Screenshot-10](https://github.com/user-attachments/assets/6fc146ff-4f26-4a2f-9058-5afe585b6c0c)
+![Screenshot-12](https://github.com/user-attachments/assets/87d8b5f9-7398-452d-af1b-a40b08804298)
+
+Paciente (Registrar e listar)
+![Screenshot-14](https://github.com/user-attachments/assets/4ef6db1b-677f-4820-baff-3fda1c115db6)
+![Screenshot-16](https://github.com/user-attachments/assets/6d57fc42-b198-4d3c-becf-3c16cd8bc2cd)
+
+Consulta (Registrar e listar)
+![Screenshot-18](https://github.com/user-attachments/assets/f97a4e40-4ca0-4267-9d4b-bd8fe2418eb5)
+![Screenshot-20](https://github.com/user-attachments/assets/b29885ae-56a7-48ce-bba6-2a80c70610a9)
+
