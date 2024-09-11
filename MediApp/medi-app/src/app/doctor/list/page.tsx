@@ -36,38 +36,39 @@ export default function DoctorList() {
 
     return (
         <>
-            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Voltar</Link>
-            <table>
+            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Back</Link>
+            <table className='w-full border-collapse mt-4'>
                 <thead>
                     <tr>
-                        <td className='border border-slate-300'>Nome</td>
-                        <td className='border border-slate-300 text-center'>Login</td>
-                        <td className='border border-slate-300 text-center'>Especialidade Médica</td>
-                        <td className='border border-slate-300 text-center'>Registro Médico</td>
-                        <td className='border border-slate-300 text-center'>Email</td>
-                        <td className='border border-slate-300 text-center'>Telefone</td>
+                        <td className='border border-slate-300 p-2 font-bold'>Name</td>
+                        <td className='border border-slate-300 p-2 font-bold text-center'>Login</td>
+                        <td className='border border-slate-300 p-2 font-bold text-center'>Medical Specialty</td>
+                        <td className='border border-slate-300 p-2 font-bold text-center'>Medical Registration</td>
+                        <td className='border border-slate-300 p-2 font-bold text-center'>Email</td>
+                        <td className='border border-slate-300 p-2 font-bold text-center'>Phone</td>
+                        <td className='border border-slate-300 p-2 font-bold text-center'>Actions</td>
                     </tr>
                 </thead>
 
                 <tbody className="doctors" id="doctors">
                     {!!doctors && doctors.map((doctor: any) => (
-                        <tr>
-                            <td className='border border-slate-300'>{doctor.name}</td>
-                            <td className='border border-slate-300 text-center'>{doctor.login}</td>
-                            <td className='border border-slate-300 text-center'>{doctor.medicalSpecialty}</td>
-                            <td className='border border-slate-300 text-center'>{doctor.medicalRegistration}</td>
-                            <td className='border border-slate-300 text-center'>{doctor.email}</td>
-                            <td className='border border-slate-300 text-center'>{doctor.phone}</td>
-                            <td className='border border-slate-300 text-center'>
-                                <button onClick={(_e) => deleteDoctor(doctor._id)} className='bg-red-500 p-2 inline-block text-white text-sm'>Delete</button></td>
-                            <td className='border border-slate-300 text-center'>
-                            <Link href={`/doctor/edit/${doctor._id}`} className='bg-yellow-500 p-2 inline-block ml-3 text-white text-sm'>Edit</Link></td>
+                        <tr key={doctor._id}>
+                            <td className='border border-slate-300 p-2'>{doctor.name}</td>
+                            <td className='border border-slate-300 p-2 text-center'>{doctor.login}</td>
+                            <td className='border border-slate-300 p-2 text-center'>{doctor.medicalSpecialty}</td>
+                            <td className='border border-slate-300 p-2 text-center'>{doctor.medicalRegistration}</td>
+                            <td className='border border-slate-300 p-2 text-center'>{doctor.email}</td>
+                            <td className='border border-slate-300 p-2 text-center'>{doctor.phone}</td>
+                            <td className='border border-slate-300 p-2 text-center'>
+                                <button onClick={(_e) => deleteDoctor(doctor._id)} className='bg-red-500 p-2 text-white text-sm rounded-md hover:bg-red-600'>Delete</button>
+                                <Link href={`/doctor/edit/${doctor._id}`} className='bg-yellow-500 p-2 inline-block ml-3 text-white text-sm rounded-md hover:bg-yellow-600'>Edit</Link>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div>
-                {error && <div className="p-2 text-white border-gray-200 border-[1px] rounded-sm bg-red-400" style={{ color: 'red' }}>{error}</div>}
+            <div className='mt-4'>
+                {error && <div className="p-3 text-white bg-red-500 border border-red-600 rounded-md">{error}</div>}
             </div>
         </>
     )

@@ -36,35 +36,35 @@ export default function PacientList() {
 
     return (
         <>
-            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Voltar</Link>
-            <table>
+            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Back</Link>
+            <table className="min-w-full border-collapse border border-gray-300 mt-4">
                 <thead>
                     <tr>
-                        <td className='border border-slate-300'>Nome</td>
-                        <td className='border border-slate-300 text-center'>Nascimento</td>
-                        <td className='border border-slate-300 text-center'>Email</td>
-                        <td className='border border-slate-300 text-center'>Telefone</td>
+                        <th className='border border-slate-300 px-4 py-2'>Name</th>
+                        <th className='border border-slate-300 px-4 py-2 text-center'>Birth Date</th>
+                        <th className='border border-slate-300 px-4 py-2 text-center'>Email</th>
+                        <th className='border border-slate-300 px-4 py-2 text-center'>Phone</th>
+                        <th className='border border-slate-300 px-4 py-2 text-center'>Actions</th>
                     </tr>
                 </thead>
-
-                <tbody className="pacients" id="pacients">
-                    {!!pacients && pacients.map((pacient: any) => (
-                        <tr>
-                            <td className='border border-slate-300'>{pacient.name}</td>
-                            <td className='border border-slate-300 text-center'>{pacient.birthDate}</td>
-                            <td className='border border-slate-300 text-center'>{pacient.email}</td>
-                            <td className='border border-slate-300 text-center'>{pacient.phone}</td>
-                            <td className='border border-slate-300 text-center'>
-                                <button onClick={(e) => deletePacient(pacient._id)} className='bg-red-500 p-2 inline-block text-white text-sm'>Delete</button></td>
-                            <td className='border border-slate-300 text-center'>
-                            <Link href={`/pacient/edit/${pacient._id}`} className='bg-yellow-500 p-2 inline-block ml-3 text-white text-sm'>Edit</Link></td>
+                <tbody>
+                    {pacients.map((pacient: any) => (
+                        <tr key={pacient._id}>
+                            <td className='border border-slate-300 px-4 py-2'>{pacient.name}</td>
+                            <td className='border border-slate-300 px-4 py-2 text-center'>{pacient.birthDate}</td>
+                            <td className='border border-slate-300 px-4 py-2 text-center'>{pacient.email}</td>
+                            <td className='border border-slate-300 px-4 py-2 text-center'>{pacient.phone}</td>
+                            <td className='border border-slate-300 px-4 py-2 text-center'>
+                                <Link href={`/pacient/edit/${pacient._id}`} className='bg-yellow-500 p-2 inline-block text-white text-sm rounded mr-2'>Edit</Link>
+                                <button onClick={() => deletePacient(pacient._id)} className='bg-red-500 p-2 inline-block text-white text-sm rounded'>Delete</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
             <div>
-                {error && <div className="p-2 text-white border-gray-200 border-[1px] rounded-sm bg-red-400" style={{ color: 'red' }}>{error}</div>}
+                {error && <div className="p-2 text-white bg-red-500 border border-red-600 rounded mt-4">{error}</div>}
             </div>
         </>
-    )
+    );
 }

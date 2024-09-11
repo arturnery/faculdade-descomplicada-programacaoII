@@ -58,43 +58,45 @@ export default function DoctorCreate() {
 
     return (
         <>
-            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Voltar</Link>
-            <form className='w-full' onSubmit={addDoctor}>
-                <span className='font-bold text-yellow-500 py-2 block underline text-2xl'>Formulário Criação de Médico</span>
+            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Back</Link>
+            <form className='w-full max-w-lg mx-auto p-4' onSubmit={addDoctor}>
+                <span className='font-bold text-yellow-500 py-4 block underline text-2xl'>Doctor Registration Form</span>
                 <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Nome</label>
-                    <input type='text' name='name' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setName(e.target.value)} />
+                    <label htmlFor="name" className='text-sm font-bold py-2 block'>Name</label>
+                    <input type='text' name='name' className='w-full border border-gray-300 p-3 rounded-md' onChange={(e: any) => setName(e.target.value)} />
                 </div>
                 <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Login</label>
-                    <textarea name='login' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setLogin(e.target.value)} />
+                    <label htmlFor="login" className='text-sm font-bold py-2 block'>Login</label>
+                    <textarea name='login' className='w-full border border-gray-300 p-3 rounded-md' onChange={(e: any) => setLogin(e.target.value)} />
                 </div>
                 <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Senha</label>
-                    <textarea name='password' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setPassword(e.target.value)} />
+                    <label htmlFor="password" className='text-sm font-bold py-2 block'>Password</label>
+                    <textarea name='password' className='w-full border border-gray-300 p-3 rounded-md' onChange={(e: any) => setPassword(e.target.value)} />
                 </div>
                 <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Especialidade Médica</label>
-                    <textarea name='medicalSpecialty' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setMedicalSpecialty(e.target.value)} />
+                    <label htmlFor="medicalSpecialty" className='text-sm font-bold py-2 block'>Medical Specialty</label>
+                    <textarea name='medicalSpecialty' className='w-full border border-gray-300 p-3 rounded-md' onChange={(e: any) => setMedicalSpecialty(e.target.value)} />
                 </div>
                 <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Registro Médico</label>
-                    <textarea name='medicalRegistration' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setMedicalRegistration(e.target.value)} />
+                    <label htmlFor="medicalRegistration" className='text-sm font-bold py-2 block'>Medical Registration</label>
+                    <textarea name='medicalRegistration' className='w-full border border-gray-300 p-3 rounded-md' onChange={(e: any) => setMedicalRegistration(e.target.value)} />
                 </div>
                 <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Email</label>
-                    <textarea name='email' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setEmail(e.target.value)} />
+                    <label htmlFor="email" className='text-sm font-bold py-2 block'>Email</label>
+                    <textarea name='email' className='w-full border border-gray-300 p-3 rounded-md' onChange={(e: any) => setEmail(e.target.value)} />
                 </div>
                 <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Telefone</label>
-                    <textarea name='phone' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setPhone(e.target.value)} />
+                    <label htmlFor="phone" className='text-sm font-bold py-2 block'>Phone</label>
+                    <textarea name='phone' className='w-full border border-gray-300 p-3 rounded-md' onChange={(e: any) => setPhone(e.target.value)} />
                 </div>
-                <div className='w-full py-2'>
-                    <button className="w-20 p-2 text-white border-gray-200 border-[1px] rounded-sm bg-green-400">Submit</button>
+                <div className='w-full py-4'>
+                    <button className="w-full p-3 text-white bg-green-500 border border-gray-300 rounded-md hover:bg-green-600">Submit</button>
                 </div>
                 <div>
-                    {error && <div className="p-2 text-white border-gray-200 border-[1px] rounded-sm bg-red-400" style={{ color: 'red' }}>{error}</div>}
+                    {error && <div className="p-3 text-white bg-red-500 border border-red-600 rounded-md mt-4">{error}</div>}
                 </div>
-            </form></>
-    )
+            </form>
+        </>
+    );
+
 }

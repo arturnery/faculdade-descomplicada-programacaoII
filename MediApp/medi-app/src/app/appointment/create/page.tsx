@@ -1,107 +1,140 @@
-"use client"
+"use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 
 export default function AppointmentCreate() {
+  const router = useRouter();
+  const [date, setDate] = useState<string>('');
+  const [doctorId, setDoctorId] = useState<string>('');
+  const [pacientId, setPacientId] = useState<string>('');
+  const [doctors, setDoctors] = useState<any[]>([]);
+  const [pacients, setPacients] = useState<any[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
-    const router = useRouter();
+  useEffect(() => {
+    fetch('http://127.0.0.1:3001/doctors', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem("token") || ''
+      },
+    })
+      .then(response => response.json())
+      .then(data => setDoctors(data))
+      .catch(error => setError("Failed to fetch doctors."));
+  }, []);
 
-    const [date, setDate] = useState<string>('');
-    const [doctorId, setDoctorId] = useState<string>('');
-    const [pacientId, setPacientId] = useState<string>('');
-    const [doctors, setDoctors] = useState(new Array());
-    const [pacients, setPacients] = useState(new Array());
+  useEffect(() => {
+    fetch('http://127.0.0.1:3001/pacients', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': sessionStorage.getItem("token") || ''
+      },
+    })
+      .then(response => response.json())
+      .then(data => setPacients(data))
+      .catch(error => setError("Failed to fetch pacients."));
+  }, []);
 
-    const [error, setError] = useState<string | null>(null);
+  const addAppointment = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
 
-    useEffect(() => {
-        fetch('http://127.0.0.1:3001/doctors', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': sessionStorage.getItem("token") || ''
-            },
-        }).then(response => response.json())
-        .then(data => {
-            setDoctors(data);
-        });
-    }, [doctors]);
+    if (!date || !doctorId || !pacientId) {
+      setError("Please fill in all fields.");
+      return;
+    }
 
-    useEffect(() => {
-        fetch('http://127.0.0.1:3001/pacients', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': sessionStorage.getItem("token") || ''
-            },
-        }).then(response => response.json())
-        .then(data => {
-            setPacients(data);
-        });
-    }, [pacients]);
+    const formData = { date, doctorId, pacientId };
 
-    const addAppointment = async (e: any) => {
-        e.preventDefault();
-        setError(null);
+    try {
+      const response = await fetch('http://127.0.0.1:3001/postAppointment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': sessionStorage.getItem("token") || ''
+        },
+        body: JSON.stringify(formData)
+      });
 
-        if (date != "" && doctorId != ""
-            && pacientId != "") {
+      const content = await response.json();
+      if (response.ok && content.date) {
+        router.push('/home');
+      } else {
+        setError(content.error || "An unexpected error occurred.");
+      }
+    } catch (error) {
+      setError("Failed to connect to the server.");
+    }
+  };
 
-            const formData = {
-                date: date,
-                doctorId: doctorId,
-                pacientId: pacientId
-            }
-
-            const add = await fetch('http://127.0.0.1:3001/postAppointment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': sessionStorage.getItem("token") || ''
-                },
-                body: JSON.stringify(formData)
-            });
-
-            const content = await add.json();
-
-            if (content.date) {
-                router.push('/home');
-            } else {
-                setError(content.error);
-            }
-
-        }
-
-    };
-
-    return (
-        <>
-            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Voltar</Link>
-            <form className='w-full' onSubmit={addAppointment}>
-                <span className='font-bold text-yellow-500 py-2 block underline text-2xl'>Formulário Criação de Consultas</span>
-                <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Data</label>
-                    <input type='datetime-local' name='date' className='w-full border-[1px] border-gray-200 p-2 rounded-sm' onChange={(e: any) => setDate(e.target.value)} />
-                </div>
-                <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Médico</label>
-                    <select id="doctorId" onChange={(e: any) => setDoctorId(e.target.value)}>
-                        {doctors.map((doctor, i) =><option key={i} value={doctor._id}>{doctor.name}</option> )}
-                    </select>
-                </div>
-                <div className='w-full py-2'>
-                    <label htmlFor="" className='text-sm font-bold py-2 block'>Paciente</label>
-                    <select id="pacientId" onChange={(e: any) => setPacientId(e.target.value)}>
-                        {pacients.map((pacient, i) =><option key={i} value={pacient._id}>{pacient.name}</option> )}
-                    </select>
-                </div>
-                <div className='w-full py-2'>
-                    <button className="w-20 p-2 text-white border-gray-200 border-[1px] rounded-sm bg-green-400">Submit</button>
-                </div>
-                <div>
-                    {error && <div className="p-2 text-white border-gray-200 border-[1px] rounded-sm bg-red-400" style={{ color: 'red' }}>{error}</div>}
-                </div>
-            </form></>
-    )
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="w-full max-w-lg bg-white shadow-lg rounded-lg p-8">
+        <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline mb-4 inline-block" href="/home">
+          Back
+        </Link>
+        <h1 className="text-3xl font-bold text-center mb-6 text-yellow-500">Create Appointment</h1>
+        <form onSubmit={addAppointment}>
+          <div className="mb-4">
+            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+            <input
+              type="datetime-local"
+              id="date"
+              name="date"
+              className="w-full border border-gray-300 rounded-lg p-2"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="doctorId" className="block text-sm font-medium text-gray-700 mb-2">Doctor</label>
+            <select
+              id="doctorId"
+              name="doctorId"
+              className="w-full border border-gray-300 rounded-lg p-2"
+              value={doctorId}
+              onChange={(e) => setDoctorId(e.target.value)}
+              required
+            >
+              <option value="" disabled>Select a doctor</option>
+              {doctors.map((doctor) => (
+                <option key={doctor._id} value={doctor._id}>{doctor.name}</option>
+              ))}
+            </select>
+          </div>
+          <div className="mb-6">
+            <label htmlFor="pacientId" className="block text-sm font-medium text-gray-700 mb-2">Patient</label>
+            <select
+              id="pacientId"
+              name="pacientId"
+              className="w-full border border-gray-300 rounded-lg p-2"
+              value={pacientId}
+              onChange={(e) => setPacientId(e.target.value)}
+              required
+            >
+              <option value="" disabled>Select a patient</option>
+              {pacients.map((pacient) => (
+                <option key={pacient._id} value={pacient._id}>{pacient.name}</option>
+              ))}
+            </select>
+          </div>
+          <button
+            type="submit"
+            className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition duration-300"
+          >
+            Submit
+          </button>
+          {error && (
+            <div className="mt-4 p-2 text-white border border-gray-200 rounded-lg bg-red-500">
+              {error}
+            </div>
+          )}
+        </form>
+      </div>
+    </div>
+  );
 }

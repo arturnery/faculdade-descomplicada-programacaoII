@@ -1,12 +1,12 @@
-"use client"
-import React, { useEffect, useState } from 'react'; // HOOK = gancho
+"use client";
+import React, { useEffect, useState } from 'react'; // HOOK = hook
 import Link from 'next/link';
 
 export default function AppointmentList() {
-    const [appointments, setAppointments] = useState(new Array());
+    const [appointments, setAppointments] = useState<any[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [doctors, setDoctors] = useState(new Array());
-    const [pacients, setPacients] = useState(new Array());
+    const [doctors, setDoctors] = useState<any[]>([]);
+    const [patients, setPatients] = useState<any[]>([]);
 
     useEffect(() => {
         fetch('http://127.0.0.1:3001/appointments', {
@@ -15,11 +15,12 @@ export default function AppointmentList() {
                 'Content-Type': 'application/json',
                 'Authorization': sessionStorage.getItem("token") || ''
             },
-        }).then(response => response.json())
+        })
+        .then(response => response.json())
         .then(data => {
             setAppointments(data);
         });
-    }, [appointments]);
+    }, []);
 
     useEffect(() => {
         fetch('http://127.0.0.1:3001/doctors', {
@@ -28,103 +29,83 @@ export default function AppointmentList() {
                 'Content-Type': 'application/json',
                 'Authorization': sessionStorage.getItem("token") || ''
             },
-        }).then(response => response.json())
+        })
+        .then(response => response.json())
         .then(data => {
             setDoctors(data);
         });
-    }, [doctors]);
+    }, []);
 
     useEffect(() => {
-        fetch('http://127.0.0.1:3001/pacients', {
+        fetch('http://127.0.0.1:3001/patients', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': sessionStorage.getItem("token") || ''
             },
-        }).then(response => response.json())
+        })
+        .then(response => response.json())
         .then(data => {
-            setPacients(data);
+            setPatients(data);
         });
-    }, [pacients]);
+    }, []);
 
-
-    const deleteAppointment = async (id: any) => {
-        const add = await fetch(`http://127.0.0.1:3001/appointments/${id}`, {
+    const deleteAppointment = async (id: string) => {
+        const response = await fetch(`http://127.0.0.1:3001/appointments/${id}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': sessionStorage.getItem("token") || ''
             },
         });
-        const content = await add.json();
+        const content = await response.json();
 
         if (content.date) {
-            window.location.reload();
+            setAppointments(appointments.filter(app => app._id !== id)); // Update state without reloading
         } else {
             setError(content.error);
         }
-    }
+    };
 
-    const findDoctorName = (id: any) => {
-        let name;
+    const findDoctorName = (id: string) => {
+        const doctor = doctors.find(doctor => doctor._id === id);
+        return doctor ? doctor.name : 'Unknown';
+    };
 
-        doctors.map((doctor) => {
-            if (doctor._id == id){
-                name = doctor.name;
-            }
-        });
-        
-        return name;
-    }
-
-    const findPacientName = (id: any) => {
-        let name;
-
-        pacients.map((pacient) => {
-            if (pacient._id == id){
-                name = pacient.name;
-            }
-        });
-        
-        return name;
-    }
+    const findPatientName = (id: string) => {
+        const patient = patients.find(patient => patient._id === id);
+        return patient ? patient.name : 'Unknown';
+    };
 
     return (
         <>
-            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Voltar</Link>
-            <table>
-                <thead>
+            <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href="/home">Back</Link>
+            <table className="min-w-full divide-y divide-gray-200 mt-4">
+                <thead className="bg-gray-50">
                     <tr>
-                        <td className='border border-slate-300'>Date</td>
-                        <td className='border border-slate-300 text-center'>Doctor</td>
-                        <td className='border border-slate-300 text-center'>Pacient</td>
+                        <th className='border border-slate-300 py-2 px-4 text-left'>Date</th>
+                        <th className='border border-slate-300 py-2 px-4 text-left'>Doctor</th>
+                        <th className='border border-slate-300 py-2 px-4 text-left'>Patient</th>
+                        <th className='border border-slate-300 py-2 px-4 text-center'>Actions</th>
                     </tr>
                 </thead>
-
-                <tbody className="appointments" id="appointments">
-                    {!!appointments && appointments.map((appointment: any) => (
-                        <tr>
-                            <td className='border border-slate-300'>{appointment.date}</td>
-                            <td className='border border-slate-300 text-center'><label>{ findDoctorName(appointment.doctorId) } </label></td>
-                            <td className='border border-slate-300 text-center'><label>{ findPacientName(appointment.pacientId) } </label></td>
-                            <td className='border border-slate-300 text-center'>
-                                <button onClick={(e) => deleteAppointment(appointment._id)} className='bg-red-500 p-2 inline-block text-white text-sm'>Delete</button></td>
-                            <td className='border border-slate-300 text-center'>
-                                <Link href={`/appointment/edit/${appointment._id}`} className='bg-yellow-500 p-2 inline-block ml-3 text-white text-sm'>Edit</Link>
-                            </td>
-                            <td className='border border-slate-300 text-center'>
-                                <Link className='bg-green-500 p-2 inline-block ml-3 text-white text-sm' href={`/prescription/${appointment._id}/create`}>Create new prescription</Link>
-                            </td>
-                            <td className='border border-slate-300 text-center'>
-                                <Link className='bg-green-500 p-2 inline-block ml-3 text-white text-sm' href="/prescription/upload">Upload prescription</Link>
+                <tbody className="bg-white divide-y divide-gray-200">
+                    {appointments.map((appointment) => (
+                        <tr key={appointment._id}>
+                            <td className='border border-slate-300 py-2 px-4'>{appointment.date}</td>
+                            <td className='border border-slate-300 py-2 px-4'>{findDoctorName(appointment.doctorId)}</td>
+                            <td className='border border-slate-300 py-2 px-4'>{findPatientName(appointment.patientId)}</td>
+                            <td className='border border-slate-300 py-2 px-4 text-center'>
+                                <Link href={`/prescription/${appointment._id}/create`} className='bg-green-500 p-2 text-white text-sm rounded-md ml-2'>Create Prescription</Link>
+                                <Link href="/prescription/upload" className='bg-blue-500 p-2 text-white text-sm rounded-md ml-2'>Upload Prescription</Link>
+                                <Link href={`/appointment/edit/${appointment._id}`} className='bg-yellow-500 p-2 text-white text-sm rounded-md ml-2'>Edit</Link>
+                                <button onClick={() => deleteAppointment(appointment._id)} className='bg-red-500 p-2 text-white text-sm rounded-md'>Delete</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <div>
-                {error && <div className="p-2 text-white border-gray-200 border-[1px] rounded-sm bg-red-400" style={{ color: 'red' }}>{error}</div>}
-            </div>
+            {error && <div className="p-2 text-white bg-red-500 rounded-md mt-4">{error}</div>}
         </>
-    )
+    );
 }
