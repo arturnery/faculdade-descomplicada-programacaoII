@@ -9,6 +9,7 @@ Esse repositório tem como principal objetivo guardar os códigos das aulas prá
 - Boas práticas de programação e mercado
 
 📚 Organização desse repositório
+
 A pasta Medi-App contém o projeto construindo nessa disciplina. Na raiz, temos o diagrama de entidade e relacionamento do projeto construído que tem a intenção de administrar um consultório médico.
 
 💻 Projeto da Disciplina
