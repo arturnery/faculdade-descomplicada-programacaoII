@@ -47,6 +47,7 @@ Explicacao:
 ATENÇÃO: nas coleções de validação da aplicação via Postman, lembre-se de verificar (ou criar) o arquivo de ambiente (environment) e verificar a porta que sua aplicação está sendo disponibilizada. Implemente as requisições extras que você precisar.
 
 "📷 Capturas de Tela do Projeto"
+
 Tela de Loguin
 ![Screenshot-1](https://github.com/user-attachments/assets/b9c4cc61-b92f-409f-b1f7-b1d29bc60e28)
 
