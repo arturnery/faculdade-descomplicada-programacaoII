@@ -12,7 +12,6 @@ O projeto da disciplina tem a intenção de simular um consultório médico onde
 
 ![ConsultorioMedico-drawio](https://github.com/user-attachments/assets/fe42f047-5401-4672-a05f-6408ddb3c447)
 
-    Clique na imagem para visualizar em tamanho original.
 
 ℹ️ Pré-requisitos
 
